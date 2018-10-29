@@ -1,17 +1,20 @@
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import * as React from 'react';
 import LoginForm from './components/LoginForm'
 
 class App extends React.Component {
 
-  // constructor(props: {}) {
-  //   super(props); 
-  //   this.state = {
-
-  //   }
-  // }
-
-  public handleLogin = (username: string, password: string) => {
-    alert(`${username} ${password}`)
+  public handleLogin = async (username: string, password: string) => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(username, password);
+      firebase.auth().onAuthStateChanged(user => {
+        console.log(user)
+        alert(`Successfully signed in!`)
+      })
+    } catch(error) {
+      console.log(error)
+    }
   }
 
   public render() {
