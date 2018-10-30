@@ -1,5 +1,7 @@
 import * as firebase from 'firebase/app';
+import { createBrowserHistory } from 'history';
 import * as React from 'react';
+import { Router } from 'react-router-dom';
 import * as ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
@@ -14,10 +16,14 @@ const fireBaseConfig = {
   storageBucket: "financial-tracker-aeb2e.appspot.com"
 }
 
+const browserHistory = createBrowserHistory()
+
 firebase.initializeApp(fireBaseConfig)
 
 ReactDOM.render(
-  <App />,
+  <Router history={browserHistory}>
+    <App />
+  </Router>,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();

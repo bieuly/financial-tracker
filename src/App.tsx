@@ -1,27 +1,19 @@
-import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import * as React from 'react';
-import LoginForm from './components/LoginForm'
+import { Switch, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import DashboardPage from './pages/DashboardPage';
 
 class App extends React.Component {
-
-  public handleLogin = async (username: string, password: string) => {
-    try {
-      await firebase.auth().signInWithEmailAndPassword(username, password);
-      firebase.auth().onAuthStateChanged(user => {
-        console.log(user)
-        alert(`Successfully signed in!`)
-      })
-    } catch(error) {
-      console.log(error)
-    }
-  }
 
   public render() {
     return (
       <div className="App">
-        Financial Tracker
-        <LoginForm handleLogin={this.handleLogin}/>
+        <h1>Financial Tracker</h1>
+        <Switch>
+          <Route exact={true} path="/" component={HomePage}/>
+          <Route exact={true} path="/dashboard/:uid" component={DashboardPage}/>
+        </Switch>
       </div>
     );
   }
