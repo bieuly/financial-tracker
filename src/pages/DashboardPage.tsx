@@ -1,5 +1,6 @@
-import * as React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import * as firebase from 'firebase/app';
 
 interface IDashboardPageRouterProps {
     uid: string
@@ -24,6 +25,7 @@ class DashboardPage extends React.Component<IDashboardPageProps, IDashboardPageS
                 id: ""
             }
         }
+        this.handleSignOut = this.handleSignOut.bind(this)
     }
     
     public componentDidMount() {
@@ -37,11 +39,22 @@ class DashboardPage extends React.Component<IDashboardPageProps, IDashboardPageS
         })
     }
 
+    public async handleSignOut() {
+        try {
+            await firebase.auth().signOut()
+            this.props.history.push("/")
+            console.log("User successfully signed out")
+        } catch(error) {
+            console.log(`Unsuccessful user sign out: ${error}`)
+        }
+    }
+
     public render() {
         return (
             <div>
                 <h2>Dashboard</h2>
                 <div>Welcome {this.state.user.id}</div>
+                <button onClick={this.handleSignOut}>Sign Out</button>
             </div>
         )
     }

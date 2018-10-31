@@ -11,15 +11,19 @@ class HomePage extends React.Component<IHomePageProps> {
 
     public componentDidMount() {
         document.title = "Financial Tracker"
+        firebase.auth().onAuthStateChanged(user => {
+            if(!user) {
+                console.log("User is successfully signed out")
+                return
+            }
+            this.props.history.push(`/dashboard/${user!.uid}`);
+        })
     }
 
     public handleLogin = async (username: string, password: string) => {
         try {
-          await firebase.auth().signInWithEmailAndPassword(username, password);
-          firebase.auth().onAuthStateChanged(user => {
-            console.log(user);
-            this.props.history.push(`/dashboard/${user!.uid}`)
-          })
+            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+            await firebase.auth().signInWithEmailAndPassword(username, password);
         } catch(error) {
           console.log(error);
         }
