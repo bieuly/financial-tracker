@@ -16,6 +16,7 @@ class HomePage extends React.Component<IHomePageProps> {
                 console.log("User is successfully signed out")
                 return
             }
+            console.log(user)
             this.props.history.push(`/dashboard/${user!.uid}`);
         })
     }
